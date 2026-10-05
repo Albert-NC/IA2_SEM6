@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeumoExpert AI - Sistema Experto Médico</title>
+    <meta name="description" content="Sistema Experto en Neumología & Triaje Respiratorio por Niveles Adaptativos de Decisiones Clínicas.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+
+    <!-- Header Navbar -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon-pulse">
+                    <i class="fa-solid fa-lungs"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>NeumoExpert<span class="gradient-text">.AI</span></h1>
+                    <p><i class="fa-solid fa-microchip"></i> Especialidad: Neumología &amp; Triaje Respiratorio</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button id="btn-reset-app" class="action-pill-btn" title="Nuevo Diagnóstico">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> <span>Nuevo Diagnóstico</span>
+                </button>
+                <button id="theme-toggle" class="icon-btn" title="Cambiar Tema">
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+                <span class="badge-vercel-glow">
+                    <i class="fa-solid fa-bolt"></i> Vercel Online
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <main class="app-main">
+        <!-- Hero Title Banner -->
+        <div class="hero-banner">
+            <div class="hero-badge">
+                <i class="fa-solid fa-network-wired"></i> Sistema Experto de Inferencia Médica
+            </div>
+            <h2>Diagnóstico Neumológico Presuntivo &amp; Triaje</h2>
+            <p>Evaluación clínica paso a paso. Marque libremente todas las casillas de síntomas observados para calcular la probabilidad presuntiva.</p>
+        </div>
+
+        <!-- Stepper Bar -->
+        <div class="stepper-glass-bar glass-panel">
+            <div class="step-node active" id="step-node-1">
+                <div class="node-circle">1</div>
+                <span class="node-name">Perfil</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-2">
+                <div class="node-circle">2</div>
+                <span class="node-name">Síntoma</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-3">
+                <div class="node-circle">3</div>
+                <span class="node-name">Rama</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-4">
+                <div class="node-circle">4</div>
+                <span class="node-name">Asociados</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-5">
+                <div class="node-circle">5</div>
+                <span class="node-name">Vitales</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-6">
+                <div class="node-circle">6</div>
+                <span class="node-name">Alarma</span>
+            </div>
+            <div class="node-connector"></div>
+            <div class="step-node" id="step-node-7">
+                <div class="node-circle"><i class="fa-solid fa-check"></i></div>
+                <span class="node-name">Dictamen</span>
+            </div>
+        </div>
+
+        <!-- Dynamic Level Content Body -->
+        <div class="main-glass-card glass-panel">
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 1: PERFIL DEMOGRÁFICO Y ANTECEDENTES                            -->
+            <!-- ==================================================================== -->
+            <div id="level-1" class="level-view active">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-user-doctor"></i> Paso 1: Datos Demográficos y Factores de Riesgo</h3>
+                    <p>Defina los antecedentes epidemiológicos fundamentales del paciente.</p>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="n1-edad">Edad del Paciente</label>
+                        <input type="number" id="n1-edad" min="1" max="110" value="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="n1-fumador">Hábito Tabáquico / Exposición a Humo</label>
+                        <select id="n1-fumador">
+                            <option value="no">No fumador / Sin exposición a biomasa</option>
+                            <option value="moderado">Fumador moderado / Exposición ocasional</option>
+                            <option value="intenso">Fumador pesado (>10 cigarrillos/día / Leña años)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Antecedentes Neumológicos o Alérgicos Previos (Marque los aplicables):</label>
+                    <div class="checkbox-cards-grid">
+                        <label class="check-select-card">
+                            <input type="checkbox" id="chk-asma-previo">
+                            <div class="check-content">
+                                <strong>Diagnóstico Previo de Asma / Alergias:</strong> Crisis previa en la infancia/juventud.
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" id="chk-epoc-previo">
+                            <div class="check-content">
+                                <strong>EPOC / Bronquitis Crónica:</strong> Diagnóstico médico pulmonar obstructivo previo.
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <div></div>
+                    <button id="btn-to-n2" class="btn-glow-primary">
+                        Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 2: SÍNTOMA DOMINANTE                                           -->
+            <!-- ==================================================================== -->
+            <div id="level-2" class="level-view">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-bullseye"></i> Paso 2: Motivo Principal de Consulta Respiratoria</h3>
+                    <p>Seleccione el síntoma cardinal que predomina en el cuadro actual.</p>
+                </div>
+
+                <div class="path-grid">
+                    <div class="path-option-card glow-amber" data-path="tos_fiebre">
+                        <div class="path-card-header">
+                            <div class="path-icon bg-amber"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+                            <span class="path-badge-tag">Rama A</span>
+                        </div>
+                        <h4>Tos con Flema y Fiebre</h4>
+                        <p>Tos productiva, expectoración, febrícula o picos febriles con malestar general.</p>
+                    </div>
+
+                    <div class="path-option-card glow-rose" data-path="disnea">
+                        <div class="path-card-header">
+                            <div class="path-icon bg-rose"><i class="fa-solid fa-wind"></i></div>
+                            <span class="path-badge-tag">Rama B</span>
+                        </div>
+                        <h4>Dificultad para Respirar (Disnea)</h4>
+                        <p>Sensación de ahogo, falta de aire súbita o progresiva al realizar esfuerzos.</p>
+                    </div>
+
+                    <div class="path-option-card glow-cyan" data-path="sibilancias">
+                        <div class="path-card-header">
+                            <div class="path-icon bg-cyan"><i class="fa-solid fa-wave-square"></i></div>
+                            <span class="path-badge-tag">Rama C</span>
+                        </div>
+                        <h4>Silbidos en el Pecho (Sibilancias)</h4>
+                        <p>Ruido silbante al exhalar o inspirar, opresión o tiraje bronquial.</p>
+                    </div>
+
+                    <div class="path-option-card glow-purple" data-path="dolor_pleuritico">
+                        <div class="path-card-header">
+                            <div class="path-icon bg-purple"><i class="fa-solid fa-lungs-virus"></i></div>
+                            <span class="path-badge-tag">Rama D</span>
+                        </div>
+                        <h4>Dolor Torácico Pleurítico</h4>
+                        <p>Dolor punzante tipo puntada de costado al inhalar profundo o toser.</p>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-back-n1" class="btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Paso 1
+                    </button>
+                    <div></div>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 3: RAMIFICACIÓN DETALLADA                                      -->
+            <!-- ==================================================================== -->
+            <div id="level-3" class="level-view">
+                <div class="level-title-box">
+                    <div class="active-branch-pill" id="n3-branch-pill"><i class="fa-solid fa-route"></i> Rama Activa</div>
+                    <h3 id="n3-main-title"><i class="fa-solid fa-network-wired"></i> Paso 3: Detalle Semiológico de la Rama</h3>
+                    <p>Marque las casillas de todos los hallazgos semiológicos observados en el paciente.</p>
+                </div>
+
+                <!-- RAMA A -->
+                <div id="branch-tos_fiebre" class="branch-panel hidden">
+                    <div class="checkbox-card-group">
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-tos-neumonia" checked>
+                            <div class="check-content">
+                                <strong>Esputo purulento (amarillento/verdoso/herrumbroso) + Escalofríos bruscos</strong>
+                                <p>Fiebre alta repentina (>38.5°C) y dolor de costado al respirar.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-tos-viral">
+                            <div class="check-content">
+                                <strong>Tos seca o expectoración transparente + Coriza y dolor faríngeo</strong>
+                                <p>Inicio progresivo con mialgias y malestar general.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-tos-tbc">
+                            <div class="check-content">
+                                <strong>Tos continua >2-3 semanas + Esputo con estrías de sangre o sudor nocturno</strong>
+                                <p>Pérdida de peso progresiva no explicada y fiebre vespertina.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-tos-absceso">
+                            <div class="check-content">
+                                <strong>Tos productiva con esputo fétido abundante + Picos febriles continuos</strong>
+                                <p>Sensación de vómica fétida e infección necrosante.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- RAMA B -->
+                <div id="branch-disnea" class="branch-panel hidden">
+                    <div class="checkbox-card-group">
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-disnea-pneumo" checked>
+                            <div class="check-content">
+                                <strong>Aparición súbita e instantánea (minutos) con dolor punzante en un lado del tórax</strong>
+                                <p>Sensación de colapso respiratorio sin resfrío previo.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-disnea-tep">
+                            <div class="check-content">
+                                <strong>Inicio súbito tras reposo prolongado / viaje largo / cirugía previa + Taquicardia</strong>
+                                <p>Disnea severa no explicada con angustia y palpitaciones.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-disnea-epoc">
+                            <div class="check-content">
+                                <strong>Dificultad progresiva en días en paciente fumador o con tos crónica previa</strong>
+                                <p>Aumento notable de la fatiga habitual con expectoración espesa.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-disnea-epid">
+                            <div class="check-content">
+                                <strong>Dificultad progresiva con tos seca en crepitantes tipo Velcro al auscultar</strong>
+                                <p>Sensación de restricción inspiratoria en paciente mayor.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- RAMA C -->
+                <div id="branch-sibilancias" class="branch-panel hidden">
+                    <div class="checkbox-card-group">
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-sib-asma" checked>
+                            <div class="check-content">
+                                <strong>Crisis recurrentes por alérgenos/ejercicio/frío que responden a Salbutamol</strong>
+                                <p>Silbidos bronquiales variables con alivio post-inhalador.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-sib-epoc">
+                            <div class="check-content">
+                                <strong>Silbidos constantes con tos matutina diaria en fumador >40 años</strong>
+                                <p>Tolerancia al esfuerzo disminuida de forma constante en el último año.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-sib-bronquitis">
+                            <div class="check-content">
+                                <strong>Primer episodio de silbidos posterior a resfrío/cuadro viral reciente</strong>
+                                <p>Sin historia previa de asma en la infancia.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-sib-estridor">
+                            <div class="check-content">
+                                <strong>Silbidos inspiratorios y espiratorios con estridor alto / disfonía</strong>
+                                <p>Obstrucción o espasmo en la vía aérea superior.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- RAMA D -->
+                <div id="branch-dolor_pleuritico" class="branch-panel hidden">
+                    <div class="checkbox-card-group">
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-dolor-pleuritis" checked>
+                            <div class="check-content">
+                                <strong>Dolor en puntada que empeora al toser o inspirar + Fiebre</strong>
+                                <p>Alivio al recostarse sobre el hemitórax afectado.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-dolor-neumotorax">
+                            <div class="check-content">
+                                <strong>Dolor agudo unilateral con asimetría torácica y falta de aire</strong>
+                                <p>Ausencia de murmullo vesicular en ese lado.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-dolor-tep">
+                            <div class="check-content">
+                                <strong>Dolor pleurítico repentino + Hemoptisis (tos con sangre) o mareo</strong>
+                                <p>Antecedente de edema/dolor unilateral en pierna.</p>
+                            </div>
+                        </label>
+                        <label class="check-select-card">
+                            <input type="checkbox" name="chk-dolor-pericarditis">
+                            <div class="check-content">
+                                <strong>Dolor subesternal opresivo que alivia al inclinarse hacia adelante</strong>
+                                <p>Dolor pleuropericárdico con roce pericárdico.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-back-n2" class="btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Paso 2
+                    </button>
+                    <button id="btn-to-n4" class="btn-glow-primary">
+                        Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 4: SÍNTOMAS ASOCIADOS                                          -->
+            <!-- ==================================================================== -->
+            <div id="level-4" class="level-view">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-list-check"></i> Paso 4: Sintomatología Sistémica Asociada</h3>
+                    <p>Marque todas las casillas de manifestaciones asociadas presentes en las últimas 72 horas.</p>
+                </div>
+
+                <div class="checkbox-cards-grid">
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-sudor-noct">
+                        <div class="check-content">
+                            <strong>Sudoración Nocturna Profusa:</strong> Empapa la ropa durante el sueño.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-mialgias">
+                        <div class="check-content">
+                            <strong>Mialgias / Artralgias:</strong> Dolores musculares y articulares generalizados.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-cefalea">
+                        <div class="check-content">
+                            <strong>Cefalea Holocraneal:</strong> Dolor de cabeza intenso o frontal.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-gastrico">
+                        <div class="check-content">
+                            <strong>Síntomas Digestivos:</strong> Náuseas, inapetencia o vómitos aislados.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-back-n3" class="btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Paso 3
+                    </button>
+                    <button id="btn-to-n5" class="btn-glow-primary">
+                        Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 5: SIGNOS VITALES                                              -->
+            <!-- ==================================================================== -->
+            <div id="level-5" class="level-view">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-heart-pulse"></i> Paso 5: Medición Fisiológica y Constantes Vitales</h3>
+                    <p>Examine los valores numéricos observados en el paciente.</p>
+                </div>
+
+                <div class="vital-inputs-grid">
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <i class="fa-solid fa-lungs color-cyan"></i>
+                            <span>Saturación de Oxígeno (SpO2)</span>
+                        </div>
+                        <div class="input-glow-group">
+                            <input type="number" id="n5-spo2" min="50" max="100" value="95">
+                            <span class="unit-tag">% SpO2</span>
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <i class="fa-solid fa-temperature-high color-amber"></i>
+                            <span>Temperatura Corporal (°C)</span>
+                        </div>
+                        <div class="input-glow-group">
+                            <input type="number" id="n5-temp" min="35" max="42" step="0.1" value="38.2">
+                            <span class="unit-tag">°C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-back-n4" class="btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Paso 4
+                    </button>
+                    <button id="btn-to-n6" class="btn-glow-primary">
+                        Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 6: EVALUACIÓN DE SEVERIDAD Y ALARMA                            -->
+            <!-- ==================================================================== -->
+            <div id="level-6" class="level-view">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Paso 6: Valoración de Signos de Alarma y Severidad</h3>
+                    <p>Verifique la presencia de signos físicos críticos de compromiso respiratorio.</p>
+                </div>
+
+                <div class="checkbox-cards-grid">
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-cianosis">
+                        <div class="check-content">
+                            <strong>Cianosis:</strong> Coloración azulada en labios o uñas.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-uso-musc">
+                        <div class="check-content">
+                            <strong>Tiraje Intercostal:</strong> Uso activo de músculos accesorios al respirar.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-taquipnea">
+                        <div class="check-content">
+                            <strong>Taquipnea Severa:</strong> Frecuencia respiratoria >24 respiraciones/minuto.
+                        </div>
+                    </label>
+                    <label class="check-select-card">
+                        <input type="checkbox" id="chk-confusion">
+                        <div class="check-content">
+                            <strong>Confusión / Letargia:</strong> Compromiso o alteración del estado mental.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-back-n5" class="btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Paso 5
+                    </button>
+                    <button id="btn-to-n7" class="btn-glow-primary">
+                        <i class="fa-solid fa-microchip"></i> Calcular Inferencia
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================================================================== -->
+            <!-- NIVEL 7: DICTAMEN FINAL PRESUNTIVO                                    -->
+            <!-- ==================================================================== -->
+            <div id="level-7" class="level-view">
+                <div class="level-title-box">
+                    <h3><i class="fa-solid fa-square-poll-vertical"></i> Dictamen Presuntivo del Motor de Inferencia</h3>
+                    <p>Resultado generado mediante el encadenamiento probabilístico de las reglas.</p>
+                </div>
+
+                <!-- Tree Trail Path Bar -->
+                <div class="path-trail-bar">
+                    <span class="trail-title"><i class="fa-solid fa-route"></i> Trazabilidad del Árbol:</span>
+                    <div class="trail-chips" id="trace-path-display">
+                        <span class="chip-step">Paso 1</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="chip-step">Paso 2</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="chip-step">Paso 3</span>
+                    </div>
+                </div>
+
+                <!-- Final Diagnostic Hero Card -->
+                <div class="diagnostic-hero-card">
+                    <div class="diag-card-header">
+                        <div class="diag-title-area">
+                            <span class="diag-subtitle">DIAGNÓSTICO PRESUNTIVO DE MAYOR PROBABILIDAD</span>
+                            <h2 id="res-diag-title">Es probable que presente: --</h2>
+                        </div>
+                        <div class="certainty-pill-container">
+                            <span class="cf-label-sub">Nivel de Certeza Diagnóstica (CF):</span>
+                            <div class="certainty-pill-badge-lg" id="res-cf-val">92%</div>
+                            <span class="cf-explanation-tip"><i class="fa-solid fa-circle-info"></i> CF (Certainty Factor): Mide la probabilidad probabilística según las casillas marcadas.</span>
+                        </div>
+                    </div>
+
+                    <div class="triage-banner" id="res-triage-strip">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>RECOMENDACIÓN DE TRIAJE:</span>
+                        <strong id="res-triage-text">--</strong>
+                    </div>
+
+                    <div class="diag-details-grid">
+                        <div class="diag-detail-col">
+                            <h4><i class="fa-solid fa-notes-medical"></i> Descripción Fisiopatológica Presuntiva</h4>
+                            <p id="res-diag-desc" class="desc-text">--</p>
+
+                            <h4 class="mt-4"><i class="fa-solid fa-vial"></i> Exámenes Auxiliares Recomendados</h4>
+                            <ul id="res-exams-list" class="exams-list">
+                                <li>--</li>
+                            </ul>
+                        </div>
+
+                        <div class="diag-detail-col">
+                            <h4><i class="fa-solid fa-microchip"></i> Reglas Lógicas Disparadas</h4>
+                            <div id="res-rules-list" class="rules-chips-grid">
+                                <!-- Dynamic Chips -->
+                            </div>
+
+                            <h4 class="mt-4"><i class="fa-solid fa-user-nurse"></i> Orientación Médica Sugerida</h4>
+                            <div class="conduct-box" id="res-conduct-box">
+                                --
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mandatory Medical Disclaimer Footer Note -->
+                <div class="disclaimer-note-box">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <span><strong>Nota Médica Informativa:</strong> Los resultados emitidos por este sistema experto representan únicamente una recomendación presuntiva y probabilística. Por favor, <strong>visite a su médico de preferencia</strong> para una evaluación clínica presencial, anamnesis completa y diagnóstico definitivo.</span>
+                </div>
+
+                <div class="action-footer">
+                    <button id="btn-restart-all" class="btn-glow-primary full-width-btn">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> Iniciar Nuevo Diagnóstico Neumológico
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Inteligencia Artificial II - Semana 6 &copy; 2026 | Sistema Experto Neumológico | Desplegable en <strong>Vercel</strong></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

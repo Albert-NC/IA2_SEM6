@@ -1,0 +1,19 @@
+{
+  "name": "lab-ia-sem6",
+  "version": "1.0.0",
+  "description": "Sistema Experto Basado en Reglas - Asignacion de Analista Red LAN y Asistente por Paginas",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "expert-system",
+    "rule-based",
+    "ia2",
+    "semana6",
+    "vercel"
+  ],
+  "author": "IA II",
+  "license": "MIT"
+}
